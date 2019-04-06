@@ -61,6 +61,8 @@ class App extends Component {
             list: list,
             searchTerm: '' // 定义初始状态，可以把输入框每次变化的输入值储存到组件的内部状态中
         };
+
+
         // 单项数据流。你在界面通过 onClick 触发一个动作，再通过函数或类方法修改组件的 state，
         // 最后组件的 render() 方法再次运行并更新界面。
         this.onSearchChange = this.onSearchChange.bind(this);
@@ -107,11 +109,19 @@ class App extends Component {
       确保组件重新渲染并且展示从内部状态获取到的正确数据。
       但是需要注意，不要直接修改 state。你必须使用 setState() 方法来修改它。
       * */
+
+      /*
+      表单元素比如 <input>, <textarea> 和 <select> 会以原生 HTML 的形式保存他们自己的状态。一旦有人从外部做了一些修改，
+      它们就会修改内部的值，在 React 中这被称为不受控组件，因为它们自己处理状态。
+      在 React 中，你应该确保这些元素变为受控组件。
+      * */
+      const { searchTerm } = this.state;
       return (
           <div className="App">
               <form>
                   <input
                       type="text"
+                      value={searchTerm}
                       onChange={this.onSearchChange}
                   />
               </form>
