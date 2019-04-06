@@ -46,6 +46,15 @@ class App extends Component {
         this.state = {
             list: list
         };
+        // 单项数据流。你在界面通过 onClick 触发一个动作，再通过函数或类方法修改组件的 state，
+        // 最后组件的 render() 方法再次运行并更新界面。
+        this.onDismiss = this.onDismiss.bind(this);
+    }
+
+    onDismiss(id) {
+        const isNotId = item => item.objectID !== id;
+        const updatedList = this.state.list.filter(isNotId);
+        this.setState({ list: updatedList });
     }
 
     render() {
@@ -72,6 +81,14 @@ class App extends Component {
                         <span>{item.author}</span>
                         <span>{item.num_comments}</span>
                         <span>{item.points}</span>
+                          <span>
+                            <button
+                                onClick={() => this.onDismiss(item.objectID)}
+                                type="button"
+                            >
+                            Dismiss
+                            </button>
+                          </span>
                       </div>
               )}
 
