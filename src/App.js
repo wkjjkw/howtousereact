@@ -49,10 +49,15 @@ const isSearched = searchTerm => item =>
 
 class Search extends Component {
     render() {
-        const { value, onChange } = this.props;
+        /*
+        通过children 属性可以将元素从上层传递到你的组件中，这些元素对你的组件来说是未知的，但是却为组件相互组合提供了
+        可能性。
+        Search 组件可以从 props 对象中解构出 children 属性。然后它就可以指定这个 children应该显示在哪里。
+        * */
+        const { value, onChange,children } = this.props;
         return (
             <form>
-                <input
+                {children}<input
                     type="text"
                     value={value}
                     onChange={onChange}
@@ -164,7 +169,9 @@ class App extends Component {
               <Search
                   value={searchTerm}
                   onChange={this.onSearchChange}
-              />
+              >
+              search
+              </Search>
               <Table
                   list={list}
                   pattern={searchTerm}
