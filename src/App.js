@@ -35,7 +35,7 @@ React Component 类暴露出来的方法都是公共的接口。这些方法中�
 
 
 class App extends Component {
-    // 当你使用 ES6 编写的组件有一个构造函数时，它需要强制地调用 super(); 方法
+    // 当你使用 ES6 编写的组件有一个构造函数时，它需要强制地调用 super(); 方法，因为这个App 组件是 Component 的子类。
     /*
     你也可以调用 super(props);，它会在你的构造函数中设置 this.props 以供在构造函数中访问它们。
     否则当在构造函数中访问 this.props ，会得到 undefined。
