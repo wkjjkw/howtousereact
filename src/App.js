@@ -33,6 +33,20 @@ React Component 类暴露出来的方法都是公共的接口。这些方法中�
 构造函数只会在组件初始化时调用一次。
 * */
 
+// ES5
+// function isSearched(searchTerm) {
+//     return function(item) {
+//         return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+//     }
+// }
+
+// ES6
+/* React 的生态使用了大量的函数式编程概念。通常情况下，你会使用一个函数返回另一个函数（高阶函数）。
+在JavaScript ES6 中，可以使用箭头函数更简洁的表达这些。
+*/
+const isSearched = searchTerm => item =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
 
 class App extends Component {
     // 当你使用 ES6 编写的组件有一个构造函数时，它需要强制地调用 super(); 方法，因为这个App 组件是 Component 的子类。
@@ -44,10 +58,12 @@ class App extends Component {
         super(props);
         // state 通过使用 this 绑定在类上。因此，你可以在整个组件中访问到 state。
         this.state = {
-            list: list
+            list: list,
+            searchTerm: '' // 定义初始状态，可以把输入框每次变化的输入值储存到组件的内部状态中
         };
         // 单项数据流。你在界面通过 onClick 触发一个动作，再通过函数或类方法修改组件的 state，
         // 最后组件的 render() 方法再次运行并更新界面。
+        this.onSearchChange = this.onSearchChange.bind(this);
         this.onDismiss = this.onDismiss.bind(this);  // 类方法不会自动绑定 this到实例上。
         // 不推荐写法：将业务逻辑写在类方法里
         // this.onDismiss = (id) => {
@@ -64,6 +80,10 @@ class App extends Component {
         const isNotId = item => item.objectID !== id;
         const updatedList = this.state.list.filter(isNotId);
         this.setState({ list: updatedList });
+    }
+
+    onSearchChange(event) {
+        this.setState({ searchTerm: event.target.value });
     }
 
     // 另一种写法，箭头函数自动绑定this
@@ -89,7 +109,13 @@ class App extends Component {
       * */
       return (
           <div className="App">
-              {this.state.list.map(item =>
+              <form>
+                  <input
+                      type="text"
+                      onChange={this.onSearchChange}
+                  />
+              </form>
+              {this.state.list.filter(isSearched(this.state.searchTerm)).map(item =>
                       <div key={item.objectID}>
                         <span>
                         <a href={item.url}>{item.title}</a>
