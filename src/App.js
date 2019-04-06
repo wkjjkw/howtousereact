@@ -48,12 +48,30 @@ class App extends Component {
         };
         // 单项数据流。你在界面通过 onClick 触发一个动作，再通过函数或类方法修改组件的 state，
         // 最后组件的 render() 方法再次运行并更新界面。
-        this.onDismiss = function onDismiss(id) {
-            const isNotId = item => item.objectID !== id;
-            const updatedList = this.state.list.filter(isNotId);
-            this.setState({ list: updatedList });
-        }
+        this.onDismiss = this.onDismiss.bind(this);  // 类方法不会自动绑定 this到实例上。
+        // 不推荐写法：将业务逻辑写在类方法里
+        // this.onDismiss = (id) => {
+        //     const isNotId = item => item.objectID !== id;
+        //     const updatedList = this.state.list.filter(isNotId);
+        //     this.setState({ list: updatedList });
+        // }
     }
+    /*
+    注意构造函数目的只是实例化你的类以及所有的属性。
+    这就是为什么我们应该把业务逻辑定义在构造函数之外。
+    * */
+    onDismiss(id) {
+        const isNotId = item => item.objectID !== id;
+        const updatedList = this.state.list.filter(isNotId);
+        this.setState({ list: updatedList });
+    }
+
+    // 另一种写法，箭头函数自动绑定this
+    // onDismiss = id => {
+    //     const isNotId = item => item.objectID !== id;
+    //     const updatedList = this.state.list.filter(isNotId);
+    //     this.setState({ list: updatedList });
+    // }
 
     render() {
       // var helloWorld = 'Welcome to the 合肥';
