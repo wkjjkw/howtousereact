@@ -48,25 +48,68 @@ const isSearched = searchTerm => item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 // search组件
-class Search extends Component {
-    render() {
-        /*
-        通过children 属性可以将元素从上层传递到你的组件中，这些元素对你的组件来说是未知的，但是却为组件相互组合提供了
-        可能性。
-        Search 组件可以从 props 对象中解构出 children 属性。然后它就可以指定这个 children应该显示在哪里。
-        * */
-        const { value, onChange,children } = this.props;
-        return (
-            <form>
-                {children}<input
-                    type="text"
-                    value={value}
-                    onChange={onChange}
-                />
-            </form>
-        );
-    }
+// class Search extends Component {
+//     render() {
+//         /*
+//         通过children 属性可以将元素从上层传递到你的组件中，这些元素对你的组件来说是未知的，但是却为组件相互组合提供了
+//         可能性。
+//         Search 组件可以从 props 对象中解构出 children 属性。然后它就可以指定这个 children应该显示在哪里。
+//         * */
+//         const { value, onChange,children } = this.props;
+//         return (
+//             <form>
+//                 {children}<input
+//                     type="text"
+//                     value={value}
+//                     onChange={onChange}
+//                 />
+//             </form>
+//         );
+//     }
+// }
+
+// 将search重构为一个函数式无状态组件
+// props 可以在函数签名（这里应指函数入参）中访问，返回值是 JSX。
+// 你已经知道 ES6 解构了，所以在函数式无状态组件中，你可以优化之前的写法。
+// 最佳实践就是在函数签名中通过解构 props 来使用它。
+
+// function Search(props) {
+//     const { value, onChange, children } = props;
+//     return (
+//         <form>
+//             {children} <input
+//             type="text"
+//             value={value}
+//             onChange={onChange}
+//         />
+//         </form>
+//     );
+// }
+
+// const Search = ({ value, onChange, children }) =>
+//     <form>
+//         {children} <input
+//         type="text"
+//         value={value}
+//         onChange={onChange}
+//     />
+//     </form>
+
+// 当使用块声明时，人们往往容易在这个函数里面做过多的事情。通过移除块声明，你可以专注在函数的输入和输出上。
+
+const Search = ({ value, onChange, children }) => {
+// do something
+    return (
+        <form>
+            {children} <input
+            type="text"
+            value={value}
+            onChange={onChange}
+        />
+        </form>
+    );
 }
+
 
 // Button组件
 
@@ -105,7 +148,7 @@ class Table extends Component {
                 <span>{item.num_comments}</span>
                 <span>{item.points}</span>
                 <span>
-                    <Button onClick={()=>onDismiss(item.ObjectId)}>
+                    <Button onClick={()=>onDismiss(item.objectID)}>
                         Dismiss
                     </Button>
                 </span>
@@ -151,6 +194,7 @@ class App extends Component {
     这就是为什么我们应该把业务逻辑定义在构造函数之外。
     * */
     onDismiss(id) {
+        console.log(id)
         const isNotId = item => item.objectID !== id;
         const updatedList = this.state.list.filter(isNotId);
         this.setState({ list: updatedList });
