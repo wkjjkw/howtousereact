@@ -47,6 +47,7 @@ React Component 类暴露出来的方法都是公共的接口。这些方法中�
 const isSearched = searchTerm => item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
+// search组件
 class Search extends Component {
     render() {
         /*
@@ -67,6 +68,29 @@ class Search extends Component {
     }
 }
 
+// Button组件
+
+class Button extends Component {
+    render() {
+        const {
+            onClick,
+            className = '',
+            children
+        } = this.props;
+
+        return (
+            <button
+                onClick ={onClick}
+                className={className}
+                type="button"
+            >
+                {children}
+            </button>
+        );
+    }
+}
+
+// table组件
 class Table extends Component {
     render() {
             const { list, pattern, onDismiss } = this.props;
@@ -81,12 +105,9 @@ class Table extends Component {
                 <span>{item.num_comments}</span>
                 <span>{item.points}</span>
                 <span>
-                <button
-                    onClick={() => onDismiss(item.objectID)}
-                    type="button"
-                >
-                Dismiss
-                </button>
+                    <Button onClick={()=>onDismiss(item.ObjectId)}>
+                        Dismiss
+                    </Button>
                 </span>
                 </div>
                     )}
@@ -94,6 +115,9 @@ class Table extends Component {
             );
         }
     }
+
+
+
 
 
 class App extends Component {
